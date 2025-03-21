@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Strikes in Counts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+        #chart-container {
+            width: 70%;
+            margin: 50px auto;
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align: center;">Strikes in Counts</h2>
+
+<div style="text-align: center;">
+    <label for="count">Count:</label>
+    <select id="count" name="count" onchange="updateChart()">
+        <option value="">Select Count</option>
+        <option value="00">00</option>
+        <option value="01">01</option>
+        <option value="02">02</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+        <option value="32">32</option>
+    </select>
+</div>
+
+<div id="chart-container">
+    <canvas id="strikeChart"></canvas>
+</div>
+
+<script>
+// Sample strike data for each count (replace with dynamic data if needed)
+const strikeData = {
+    "00": 5,
+    "01": 10,
+    "02": 15,
+    "10": 7,
+    "11": 12,
+    "12": 18,
+    "20": 9,
+    "21": 14,
+    "22": 20,
+    "30": 6,
+    "31": 11,
+    "32": 17
+};
+
+let chartInstance;
+
+// Initialize chart
+function initChart(data) {
+    const ctx = document.getElementById('strikeChart').getContext('2d');
+    chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Strikes'],
+            datasets: [{
+                label: 'Strikes in Count',
+                data: [data],
+                backgroundColor: '#5cb85c',
+                borderColor: '#4cae4c',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
+// Update chart on count selection
+function updateChart() {
+    const selectedCount = document.getElementById('count').value;
+    const strikes = selectedCount ? strikeData[selectedCount] : 0;
+
+    if (chartInstance) {
+        chartInstance.destroy(); // Destroy previous instance before creating a new one
+    }
+
+    initChart(strikes);
+}
+
+// Initialize with empty chart
+window.onload = function () {
+    initChart(0);
+};
+</script>
+
+</body>
+</html>
